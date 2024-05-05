@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.wh.mapper.PlanBannerMapper">
+    
+    <resultMap type="PlanBanner" id="PlanBannerResult">
+        <result property="id"    column="id"    />
+        <result property="planId"    column="plan_id"    />
+        <result property="banner"    column="banner"    />
+        <result property="orderNo"    column="order_no"    />
+        <result property="createBy"    column="create_by"    />
+        <result property="createTime"    column="create_time"    />
+        <result property="updateBy"    column="update_by"    />
+        <result property="updateTime"    column="update_time"    />
+        <result property="remark"    column="remark"    />
+    </resultMap>
+
+    <sql id="selectPlanBannerVo">
+        select id, plan_id, banner, order_no, create_by, create_time, update_by, update_time, remark from wh_plan_banner
+    </sql>
+
+    <select id="selectPlanBannerList" parameterType="PlanBanner" resultMap="PlanBannerResult">
+        <include refid="selectPlanBannerVo"/>
+        <where>  
+            <if test="planId != null "> and plan_id = #{planId}</if>
+            <if test="banner != null  and banner != ''"> and banner = #{banner}</if>
+            <if test="orderNo != null "> and order_no = #{orderNo}</if>
+        </where>
+    </select>
+    
+    <select id="selectPlanBannerById" parameterType="Long" resultMap="PlanBannerResult">
+        <include refid="selectPlanBannerVo"/>
+        where id = #{id}
+    </select>
+        
+    <insert id="insertPlanBanner" parameterType="PlanBanner">
+        insert into wh_plan_banner
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null">id,</if>
+            <if test="planId != null">plan_id,</if>
+            <if test="banner != null">banner,</if>
+            <if test="orderNo != null">order_no,</if>
+            <if test="createBy != null">create_by,</if>
+            <if test="createTime != null">create_time,</if>
+            <if test="updateBy != null">update_by,</if>
+            <if test="updateTime != null">update_time,</if>
+            <if test="remark != null">remark,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null">#{id},</if>
+            <if test="planId != null">#{planId},</if>
+            <if test="banner != null">#{banner},</if>
+            <if test="orderNo != null">#{orderNo},</if>
+            <if test="createBy != null">#{createBy},</if>
+            <if test="createTime != null">#{createTime},</if>
+            <if test="updateBy != null">#{updateBy},</if>
+            <if test="updateTime != null">#{updateTime},</if>
+            <if test="remark != null">#{remark},</if>
+         </trim>
+    </insert>
+
+    <update id="updatePlanBanner" parameterType="PlanBanner">
+        update wh_plan_banner
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="planId != null">plan_id = #{planId},</if>
+            <if test="banner != null">banner = #{banner},</if>
+            <if test="orderNo != null">order_no = #{orderNo},</if>
+            <if test="createBy != null">create_by = #{createBy},</if>
+            <if test="createTime != null">create_time = #{createTime},</if>
+            <if test="updateBy != null">update_by = #{updateBy},</if>
+            <if test="updateTime != null">update_time = #{updateTime},</if>
+            <if test="remark != null">remark = #{remark},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deletePlanBannerById" parameterType="Long">
+        delete from wh_plan_banner where id = #{id}
+    </delete>
+
+    <delete id="deletePlanBannerByIds" parameterType="String">
+        delete from wh_plan_banner where id in 
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+</mapper>
